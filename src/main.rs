@@ -67,21 +67,30 @@ fn main() {
         nmap_run.args).as_bytes()).unwrap();
     
     // Step 3: Alive Hosts via ICMP
-    let mut f = File::create(config.alive_hosts_icmp).unwrap();
-    for host in nmap_run.alive_hosts_for_reason(Reason::EchoReply) {
-        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+    let hosts = nmap_run.alive_hosts_for_reason(Reason::EchoReply)
+    if !hosts.is_empty() {
+        let mut f = File::create(config.alive_hosts_icmp).unwrap();
+        for host in hosts {
+            f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        }
     }
 
     // Step 4: Alive Hosts via -Pn flag
-    let mut f = File::create(config.alive_hosts_forced).unwrap();
-    for host in nmap_run.alive_hosts_for_reason(Reason::Forced) {
-        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+    let hosts = nmap_run.alive_hosts_for_reason(Reason::Forced);
+    if !hosts.is_empty() {
+        let mut f = File::create(config.alive_hosts_forced).unwrap();
+        for host in hosts {
+            f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        }
     }
 
     // Step 5: Alive Hosts with Open Ports
-    let mut f = File::create(config.alive_hosts_ports).unwrap();
-    for host in nmap_run.alive_hosts_with_open_ports() {
-        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+    let hosts = nmap_run.alive_hosts_with_open_ports();
+    if !hosts.is_empty() {
+        let mut f = File::create(config.alive_hosts_ports).unwrap();
+        for host in hosts {
+            f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        }
     }
 
     // Step 6: Create Port Files
