@@ -67,7 +67,7 @@ fn main() {
         nmap_run.args).as_bytes()).unwrap();
     
     // Step 3: Alive Hosts via ICMP
-    let hosts = nmap_run.alive_hosts_for_reason(Reason::EchoReply)
+    let hosts = nmap_run.alive_hosts_for_reason(Reason::EchoReply);
     if !hosts.is_empty() {
         let mut f = File::create(config.alive_hosts_icmp).unwrap();
         for host in hosts {
