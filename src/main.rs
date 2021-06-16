@@ -16,23 +16,22 @@ use std::fs;
 use crate::xml_data::{Protocol, Reason};
 
 struct Config {
-    out_dir: PathBuf,
+    // out_dir: PathBuf,
     tcp_port_files_dir: PathBuf,
-    udp_port_files_dir: PathBuf,
+    // udp_port_files_dir: PathBuf,
     metadata_file: PathBuf,
     alive_hosts_icmp: PathBuf,
     alive_hosts_ports: PathBuf,
     alive_hosts_forced: PathBuf,
 }
 fn main() {
-    let xml_file_name = "test.xml";
     let out_dir_name = "Parsed-Results/";
 
     // Configure paths for the various output files
     let config = Config {
-        out_dir: PathBuf::from(out_dir_name),
+        // out_dir: PathBuf::from(out_dir_name),
         tcp_port_files_dir: [out_dir_name, "port-files-tcp/"].iter().collect(),
-        udp_port_files_dir: [out_dir_name, "port-files-udp/"].iter().collect(),
+        // udp_port_files_dir: [out_dir_name, "port-files-udp/"].iter().collect(),
         metadata_file: [out_dir_name, "scan-metadata.txt"].iter().collect(),
         alive_hosts_icmp: [out_dir_name, "alive-hosts-icmp.txt"].iter().collect(),
         alive_hosts_ports: [out_dir_name, "alive-hosts-with-open-ports.txt"].iter().collect(),
