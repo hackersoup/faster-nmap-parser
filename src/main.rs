@@ -58,7 +58,7 @@ fn main() {
 
     // Step 2: Metadata file
     let mut f = File::create(config.metadata_file).unwrap();
-    f.write(format!(
+    f.write_all(format!(
         "Scan Start:\t{}\nScan End:\t{}\nElapsed Time:\t{}s\nNmap Version:\t{}\nNmap Command:\t{}\n",
         nmap_run.startstr,
         nmap_run.runstats.finished.timestr,
@@ -69,25 +69,25 @@ fn main() {
     // Step 3: Alive Hosts via ICMP
     let mut f = File::create(config.alive_hosts_icmp).unwrap();
     for host in nmap_run.alive_hosts_for_reason(Reason::EchoReply) {
-        f.write(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
     }
 
     // Step 4: Alive Hosts via -Pn flag
     let mut f = File::create(config.alive_hosts_forced).unwrap();
     for host in nmap_run.alive_hosts_for_reason(Reason::Forced) {
-        f.write(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
     }
 
     // Step 5: Alive Hosts with Open Ports
     let mut f = File::create(config.alive_hosts_ports).unwrap();
     for host in nmap_run.alive_hosts_with_open_ports() {
-        f.write(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+        f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
     }
 
     // Step 6: Create Port Files
     // Step 6.1: TCP
-    let ports = nmap_run.all_ports_for_protocol(Protocol::TCP);
-    if ports.len() > 0 {
+    let ports = nmap_run.all_ports_for_protocol(Protocol::Tcp);
+    if ports.is_empty() {
         fs::create_dir(&config.tcp_port_files_dir).unwrap();
 
         for port in ports {
@@ -96,15 +96,15 @@ fn main() {
                 MAIN_SEPARATOR,
                 port.to_string());
             let mut f = File::create(filename).unwrap();
-            for host in nmap_run.hosts_with_this_port_open(Protocol::TCP, port) {
-                f.write(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+            for host in nmap_run.hosts_with_this_port_open(Protocol::Tcp, port) {
+                f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
             }
         }
     }
 
     // Step 6.2: UDP
-    let ports  = nmap_run.all_ports_for_protocol(Protocol::UDP);
-    if ports.len() > 0 {
+    let ports  = nmap_run.all_ports_for_protocol(Protocol::Udp);
+    if ports.is_empty() {
         fs::create_dir(&config.tcp_port_files_dir).unwrap();
 
         for port in ports {
@@ -113,8 +113,8 @@ fn main() {
                 MAIN_SEPARATOR,
                 port.to_string());
             let mut f = File::create(filename).unwrap();
-            for host in nmap_run.hosts_with_this_port_open(Protocol::UDP, port) {
-                f.write(format!("{}\n", host.address.addr).as_bytes()).unwrap();
+            for host in nmap_run.hosts_with_this_port_open(Protocol::Udp, port) {
+                f.write_all(format!("{}\n", host.address.addr).as_bytes()).unwrap();
             }
         }
     }

@@ -26,7 +26,7 @@ impl<'a> NmapRun {
 
     pub fn alive_hosts_with_open_ports(&'a self) -> Vec<&'a Host> {
         self.hosts.iter()
-            .filter(|host| host.ports.ports.len() > 0)
+            .filter(|host| host.ports.ports.is_empty())
             .collect()
     }
 
@@ -110,9 +110,9 @@ pub struct Port {
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum Protocol {
     #[serde(rename = "tcp")]
-    TCP,
+    Tcp,
     #[serde(rename = "udp")]
-    UDP,
+    Udp,
 }
 
 #[derive(Debug, Deserialize)]
