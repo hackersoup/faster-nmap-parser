@@ -18,7 +18,7 @@ use crate::xml_data::{Protocol, Reason};
 struct Config {
     // out_dir: PathBuf,
     tcp_port_files_dir: PathBuf,
-    // udp_port_files_dir: PathBuf,
+    udp_port_files_dir: PathBuf,
     metadata_file: PathBuf,
     alive_hosts_icmp: PathBuf,
     alive_hosts_ports: PathBuf,
@@ -31,7 +31,7 @@ fn main() {
     let config = Config {
         // out_dir: PathBuf::from(out_dir_name),
         tcp_port_files_dir: [out_dir_name, "port-files-tcp/"].iter().collect(),
-        // udp_port_files_dir: [out_dir_name, "port-files-udp/"].iter().collect(),
+        udp_port_files_dir: [out_dir_name, "port-files-udp/"].iter().collect(),
         metadata_file: [out_dir_name, "scan-metadata.txt"].iter().collect(),
         alive_hosts_icmp: [out_dir_name, "alive-hosts-icmp.txt"].iter().collect(),
         alive_hosts_ports: [out_dir_name, "alive-hosts-with-open-ports.txt"].iter().collect(),
@@ -87,7 +87,7 @@ fn main() {
     // Step 6: Create Port Files
     // Step 6.1: TCP
     let ports = nmap_run.all_ports_for_protocol(Protocol::Tcp);
-    if ports.is_empty() {
+    if !ports.is_empty() {
         fs::create_dir(&config.tcp_port_files_dir).unwrap();
 
         for port in ports {
@@ -104,8 +104,8 @@ fn main() {
 
     // Step 6.2: UDP
     let ports  = nmap_run.all_ports_for_protocol(Protocol::Udp);
-    if ports.is_empty() {
-        fs::create_dir(&config.tcp_port_files_dir).unwrap();
+    if !ports.is_empty() {
+        fs::create_dir(&config.udp_port_files_dir).unwrap();
 
         for port in ports {
             let filename = format!("{}{}{}.txt",
