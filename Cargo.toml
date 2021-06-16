@@ -1,5 +1,5 @@
 [package]
-name = "better-nmap-parser"
+name = "faster-nmap-parser"
 version = "0.1.0"
 authors = ["Brad Campbell <bcampbell@ingressive.com>"]
 edition = "2018"

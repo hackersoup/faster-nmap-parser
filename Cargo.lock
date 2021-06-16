@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "better-nmap-parser"
+name = "faster-nmap-parser"
 version = "0.1.0"
 dependencies = [
  "quick-xml",
