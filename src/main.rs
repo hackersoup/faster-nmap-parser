@@ -1,4 +1,8 @@
-use std::{fmt::format, fs::{File, create_dir}, io::{Read, Write}, path::{MAIN_SEPARATOR, PathBuf}, time::Duration};
+use std::{
+    fs::File,
+    io::{Read, Write},
+    path::{MAIN_SEPARATOR, PathBuf}
+};
 
 extern crate serde;
 extern crate quick_xml;
@@ -79,7 +83,7 @@ fn main() {
     let ports = nmap_run.all_ports_for_protocol(Protocol::TCP);
     if ports.len() > 0 {
         fs::create_dir(&config.tcp_port_files_dir).unwrap();
-        
+
         for port in ports {
             let filename = format!("{}{}{}.txt",
                 (&config.tcp_port_files_dir).to_str().unwrap(),
