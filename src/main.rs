@@ -1,7 +1,8 @@
 use std::{
     fs::File,
     io::{Read, Write},
-    path::{MAIN_SEPARATOR, PathBuf}
+    path::{MAIN_SEPARATOR, PathBuf},
+    env
 };
 
 extern crate serde;
@@ -39,8 +40,14 @@ fn main() {
 
     };
 
+    let args = env::args().collect::<Vec<_>>();
+    if args.len() <= 1 {
+        println!("Usage: {} <nmap xml file>", args[0]);
+        return;
+    }
+
     // Read and parse the XML file into an easy to work with struct
-    let mut xml_file = File::open(xml_file_name).unwrap();
+    let mut xml_file = File::open(&args[1]).unwrap();
     let mut xml = String::new();
     xml_file.read_to_string(&mut xml).unwrap();
     let xml = xml;
